@@ -281,7 +281,8 @@ function Transcode([uint64]$videoBitrate, [uint64]$audioBitrate)
               -cpu-used [Environment]::ProcessorCount `
               $audioParams `
               -map 0:v `
-              -filter:v "fps=${FPS},scale=${width}:${height}:flags=lanczos" `
+              -filter:v "fps=${FPS},scale=${width}:${height}" `
+              -c:v hevc_nvenc `
               -b:v $videoBitrate `
               -c:a aac `
               -b:a $audioBitrate `
