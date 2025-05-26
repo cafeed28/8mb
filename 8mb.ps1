@@ -534,10 +534,16 @@ while ($factor -gt $toleranceThreshold -or $factor -lt 1)
     $passPrefixBlank = ' ' * $passPrefix.Length
 
     # ffmpeg doesn't seem to like bitrates lower than 1 Kbps, so abort if this ever happens.
-    # 0 audio bitrate means there is no audio stream.
-    if ($destVideoBitrate -le 1024 -or ($destAudioBitrate -ne 0 -and $destAudioBitrate -le 1024))
+    if ($destVideoBitrate -le 1024)
     {
-        echo "$passPrefix Attempted to transcode below 1 Kbps, aborting..."
+        echo "$passPrefix Attempted to transcode video below 1 Kbps, aborting..."
+        break
+    }
+
+    # audio bitrate of 0 means there is no audio stream
+    if ($destAudioBitrate -ne 0 -and $destAudioBitrate -le 1024)
+    {
+        echo "$passPrefix Attempted to transcode audio below 1 Kbps, aborting..."
         break
     }
 
